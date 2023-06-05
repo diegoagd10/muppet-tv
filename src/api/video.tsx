@@ -1,8 +1,5 @@
 import VideoListResponse from "../models/VideoListResponse";
-import { YOUTUBE_API_KEY, YOUTUBE_API_PREFIX_URL } from "@env";
-
-const API_KEY = YOUTUBE_API_KEY;
-const API_PREFIX_URL = YOUTUBE_API_PREFIX_URL;
+import Config from "../utils/config";
 
 export const getVideosApi = async (
   videoIds: string[]
@@ -12,7 +9,7 @@ export const getVideosApi = async (
       (acc: String, videoId: String) => `${acc}&id=${videoId}`,
       ""
     );
-    const url: string = `${API_PREFIX_URL}/videos?part=snippet${videoIdsParam}&key=${API_KEY}`;
+    const url: string = `${Config.youtubeApi.apiPrefixUrl}/videos?part=snippet${videoIdsParam}&key=${Config.youtubeApi.apiKey}`;
     const headers = {
       Accept: "application/json",
     };
