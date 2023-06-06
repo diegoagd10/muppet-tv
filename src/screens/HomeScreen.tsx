@@ -8,9 +8,11 @@ import {
   Dimensions,
   EmitterSubscription,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { VideoData } from "../api/ids";
 import { fetchHomeVideos, fetchVideosByVideoData } from "../service/video";
 import VideoItem from "../models/VideoItem";
+import RetryWrapper from "../components/RetryWrapper";
 import VideoList from "../components/VideoList";
 import VideoListGrid from "../components/VideoListGrid";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -22,7 +24,8 @@ const HomeScreen: React.FC = () => {
   const limit = isBigScreen ? 20 : 10;
   const [skip, setSkip] = useState<number>(0);
   const [videos, setVideos] = useState<VideoItem[]>([]);
-  const [shouldLoadMore, setShouldLoadMore] = useState<boolean>(true);
+  const [errorOccurred, setErrorOccurred] = useState<boolean>(false);
+  const [stopLoading, setStopLoading] = useState<boolean>(false);
   const [widthCard, setWidthCard] = useState<number>(
     Dimensions.get("window").width / 2
   );
@@ -48,14 +51,15 @@ const HomeScreen: React.FC = () => {
   const refreshVideos = () => {
     setSkip(0);
     setVideos([]);
-    setShouldLoadMore(true);
+    setStopLoading(false);
+    setErrorOccurred(false);
   };
 
   const loadVideos = async () => {
     try {
       const videoData: VideoData[] = await fetchHomeVideos(limit, skip);
       if (videoData.length === 0) {
-        setShouldLoadMore(false);
+        setStopLoading(true);
         return;
       }
       const videosResponse = await fetchVideosByVideoData(videoData);
@@ -63,7 +67,10 @@ const HomeScreen: React.FC = () => {
       setSkip(skip + limit);
       setVideos(finalVideos);
     } catch (error) {
-      console.error(error);
+      if (__DEV__) {
+        console.error(error);
+      }
+      setErrorOccurred(true);
     }
   };
 
@@ -75,7 +82,7 @@ const HomeScreen: React.FC = () => {
           idPrefix="home"
           loadVideos={loadVideos}
           widthCard={widthCard}
-          shouldLoadMore={shouldLoadMore}
+          stopLoading={stopLoading}
         />
       );
     }
@@ -85,7 +92,7 @@ const HomeScreen: React.FC = () => {
         idPrefix="home"
         loadVideos={loadVideos}
         isWideView={orientation === Orientation.Landscape}
-        shouldLoadMore={shouldLoadMore}
+        stopLoading={stopLoading}
       />
     );
   };
@@ -101,7 +108,10 @@ const HomeScreen: React.FC = () => {
           </Text>
         </TouchableWithoutFeedback>
       </View>
-      {renderVideoList()}
+      <RetryWrapper showError={errorOccurred} onRetryClick={refreshVideos}>
+        {renderVideoList()}
+      </RetryWrapper>
+      <StatusBar style="auto" />
     </SafeAreaView>
   );
 };

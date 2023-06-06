@@ -11,14 +11,18 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import YoutubePlayer from "react-native-youtube-iframe";
 import VideoList from "../components/VideoList";
 import VideoItem from "../models/VideoItem";
+import RetryWrapper from "./RetryWrapper";
+import LoadingWrapper from "./LoadingWrapper";
 
 interface Props {
   videoId: string;
   title: string;
   channelTitle: string;
   videos: VideoItem[];
-  isPlaying: boolean;
   isFullScreen: boolean;
+  isPlaying: boolean;
+  errorOccurred: boolean;
+  onErrorRetryClick: () => void;
   onVideoEnd: () => void;
   onRefresh: () => void;
 }
@@ -28,8 +32,10 @@ const VideoPlayer: React.FC<Props> = ({
   title,
   channelTitle,
   videos,
-  isPlaying,
   isFullScreen,
+  isPlaying,
+  errorOccurred,
+  onErrorRetryClick,
   onVideoEnd,
   onRefresh,
 }) => {
@@ -84,12 +90,19 @@ const VideoPlayer: React.FC<Props> = ({
         </View>
       </View>
       <View style={{ flex: 1 }}>
-        <VideoList
-          idPrefix="player"
-          videos={videos}
-          isWideView={false}
-          shouldLoadMore={false}
-        />
+        <RetryWrapper
+          showError={errorOccurred}
+          onRetryClick={onErrorRetryClick}
+        >
+          <LoadingWrapper isLoading={videos.length === 0}>
+            <VideoList
+              idPrefix="player"
+              videos={videos}
+              isWideView={false}
+              stopLoading={videos.length > 0}
+            />
+          </LoadingWrapper>
+        </RetryWrapper>
       </View>
     </SafeAreaView>
   );

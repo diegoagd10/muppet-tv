@@ -3,17 +3,17 @@ import {
   FlatList,
   ListRenderItemInfo,
   StyleSheet,
-  ActivityIndicator,
   Platform,
 } from "react-native";
 import VideoItem from "../models/VideoItem";
 import VideoCard from "./VideoCard";
+import Spinner from "./Spinner";
 
 interface Props {
   idPrefix: string;
   videos: VideoItem[];
   isWideView: boolean;
-  shouldLoadMore: boolean;
+  stopLoading?: boolean;
   loadVideos?: () => void;
 }
 
@@ -21,22 +21,18 @@ const VideoList: React.FC<Props> = ({
   idPrefix,
   videos,
   isWideView,
-  shouldLoadMore = true,
+  stopLoading = false,
   loadVideos,
 }) => {
   const loadMore = () => {
-    if (loadVideos && shouldLoadMore) {
-      loadVideos();
+    if (stopLoading) {
+      return;
     }
+    loadVideos && loadVideos();
   };
 
   const renderFooter = () => {
-    if (!shouldLoadMore) {
-      return null;
-    }
-    return (
-      <ActivityIndicator size="large" color="#AEAEAE" style={styles.spinner} />
-    );
+    return stopLoading ? null : <Spinner />;
   };
 
   return (

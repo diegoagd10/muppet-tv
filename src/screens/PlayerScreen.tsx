@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Dimensions, StatusBar, EmitterSubscription } from "react-native";
+import {
+  Dimensions,
+  EmitterSubscription,
+  StatusBar as RCStatusBar,
+} from "react-native";
 import { RouteProp } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 import { fetchFollowingUpVideos } from "../service/video";
 import { isTablet, isLandscape } from "../utils/uiUtils";
 import VideoPlayer from "../components/VideoPlayer";
@@ -30,11 +35,11 @@ const PlayerScreen: React.FC<Props> = (props) => {
   const channelId = props.route.params.channelId;
   const channelTitle = props.route.params.channelTitle;
   const [videos, setVideos] = useState<VideoItem[]>([]);
+  const [errorOccurred, setErrorOccurred] = useState<boolean>(false);
   const [isDeviceLandscape, setOnLandscape] = useState(isLandscape(Dimensions));
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
 
   useEffect(() => {
-    setVideos([]);
     setIsPlaying(true);
     (async () => {
       await loadVideos();
@@ -45,7 +50,7 @@ const PlayerScreen: React.FC<Props> = (props) => {
     const updateScreenDimensions = () => {
       const isCurrentLandscape = isLandscape(Dimensions);
       setOnLandscape(isCurrentLandscape);
-      StatusBar.setHidden(isCurrentLandscape && !isBigScreen);
+      RCStatusBar.setHidden(isCurrentLandscape && !isBigScreen);
     };
 
     const subscription: EmitterSubscription = Dimensions.addEventListener(
@@ -54,7 +59,7 @@ const PlayerScreen: React.FC<Props> = (props) => {
     );
     return () => {
       subscription.remove();
-      StatusBar.setHidden(false);
+      RCStatusBar.setHidden(false);
     };
   }, []);
 
@@ -66,7 +71,10 @@ const PlayerScreen: React.FC<Props> = (props) => {
       );
       setVideos(relatedVideos.items);
     } catch (error) {
-      console.error(error);
+      if (__DEV__) {
+        console.error(error);
+      }
+      setErrorOccurred(true);
     }
   };
 
@@ -78,33 +86,50 @@ const PlayerScreen: React.FC<Props> = (props) => {
     setIsPlaying(true);
   };
 
+  const retryLoadVideos = () => {
+    setErrorOccurred(false);
+    (async () => {
+      await loadVideos();
+    })();
+  };
+
   if (isBigScreen) {
     return (
-      <VideoPlayerTablet
+      <>
+        <VideoPlayerTablet
+          videoId={videoId}
+          title={title}
+          channelTitle={channelTitle}
+          videos={videos}
+          screenHeight={Dimensions.get("window").height}
+          screenWidth={Dimensions.get("window").width}
+          isWideView={isDeviceLandscape}
+          isPlaying={isPlaying}
+          errorOccurred={errorOccurred}
+          onErrorRetryClick={retryLoadVideos}
+          onVideoEnd={onVideoEnd}
+          onRefresh={replayVideo}
+        />
+        <StatusBar style="auto" />
+      </>
+    );
+  }
+  return (
+    <>
+      <VideoPlayer
         videoId={videoId}
         title={title}
         channelTitle={channelTitle}
         videos={videos}
-        screenHeight={Dimensions.get("window").height}
-        screenWidth={Dimensions.get("window").width}
-        isWideView={isDeviceLandscape}
+        isFullScreen={isDeviceLandscape}
         isPlaying={isPlaying}
+        errorOccurred={errorOccurred}
+        onErrorRetryClick={retryLoadVideos}
         onVideoEnd={onVideoEnd}
         onRefresh={replayVideo}
       />
-    );
-  }
-  return (
-    <VideoPlayer
-      videoId={videoId}
-      title={title}
-      channelTitle={channelTitle}
-      videos={videos}
-      isFullScreen={isDeviceLandscape}
-      isPlaying={isPlaying}
-      onVideoEnd={onVideoEnd}
-      onRefresh={replayVideo}
-    />
+      <StatusBar style="auto" />
+    </>
   );
 };
 
