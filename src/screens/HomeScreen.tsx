@@ -8,7 +8,6 @@ import {
   Dimensions,
   EmitterSubscription,
 } from "react-native";
-import { StatusBar } from "expo-status-bar";
 import { VideoData } from "../api/ids";
 import { fetchHomeVideos, fetchVideosByVideoData } from "../service/video";
 import VideoItem from "../models/VideoItem";
@@ -111,7 +110,6 @@ const HomeScreen: React.FC = () => {
       <RetryWrapper showError={errorOccurred} onRetryClick={refreshVideos}>
         {renderVideoList()}
       </RetryWrapper>
-      <StatusBar style="auto" />
     </SafeAreaView>
   );
 };

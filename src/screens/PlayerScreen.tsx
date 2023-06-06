@@ -5,7 +5,6 @@ import {
   StatusBar as RCStatusBar,
 } from "react-native";
 import { RouteProp } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
 import { fetchFollowingUpVideos } from "../service/video";
 import { isTablet, isLandscape } from "../utils/uiUtils";
 import VideoPlayer from "../components/VideoPlayer";
@@ -95,41 +94,35 @@ const PlayerScreen: React.FC<Props> = (props) => {
 
   if (isBigScreen) {
     return (
-      <>
-        <VideoPlayerTablet
-          videoId={videoId}
-          title={title}
-          channelTitle={channelTitle}
-          videos={videos}
-          screenHeight={Dimensions.get("window").height}
-          screenWidth={Dimensions.get("window").width}
-          isWideView={isDeviceLandscape}
-          isPlaying={isPlaying}
-          errorOccurred={errorOccurred}
-          onErrorRetryClick={retryLoadVideos}
-          onVideoEnd={onVideoEnd}
-          onRefresh={replayVideo}
-        />
-        <StatusBar style="auto" />
-      </>
-    );
-  }
-  return (
-    <>
-      <VideoPlayer
+      <VideoPlayerTablet
         videoId={videoId}
         title={title}
         channelTitle={channelTitle}
         videos={videos}
-        isFullScreen={isDeviceLandscape}
+        screenHeight={Dimensions.get("window").height}
+        screenWidth={Dimensions.get("window").width}
+        isWideView={isDeviceLandscape}
         isPlaying={isPlaying}
         errorOccurred={errorOccurred}
         onErrorRetryClick={retryLoadVideos}
         onVideoEnd={onVideoEnd}
         onRefresh={replayVideo}
       />
-      <StatusBar style="auto" />
-    </>
+    );
+  }
+  return (
+    <VideoPlayer
+      videoId={videoId}
+      title={title}
+      channelTitle={channelTitle}
+      videos={videos}
+      isFullScreen={isDeviceLandscape}
+      isPlaying={isPlaying}
+      errorOccurred={errorOccurred}
+      onErrorRetryClick={retryLoadVideos}
+      onVideoEnd={onVideoEnd}
+      onRefresh={replayVideo}
+    />
   );
 };
 
