@@ -21,26 +21,19 @@ export const fetchFollowingUpVideos = async (
   videoId: string,
   channelId: string
 ): Promise<VideoListResponse> => {
-  try {
-    const relatedVideos: VideoData[] = await getUnseenVideosIdsByChannelIdApi(
-      channelId,
-      FOLLOWING_UP_VIDEOS_LIMIT
-    );
-    const relatedVideoIdsSet = new Set(
-      relatedVideos.map((video) => video.docId)
-    );
-    const videoLimit = relatedVideos.length + RELEATED_VIDEOS_LIMIT;
-    const unseenVideos: VideoData[] = (
-      await getUnseenVideosIdsApi(videoLimit)
-    ).filter((video) => !relatedVideoIdsSet.has(video.docId));
-    const mergedVideos: VideoData[] = mergeVideos(relatedVideos, unseenVideos)
-      .filter((video) => video.videoId !== videoId)
-      .slice(0, RELEATED_VIDEOS_LIMIT);
-    return fetchVideosByVideoData(mergedVideos);
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  const relatedVideos: VideoData[] = await getUnseenVideosIdsByChannelIdApi(
+    channelId,
+    FOLLOWING_UP_VIDEOS_LIMIT
+  );
+  const relatedVideoIdsSet = new Set(relatedVideos.map((video) => video.docId));
+  const videoLimit = relatedVideos.length + RELEATED_VIDEOS_LIMIT;
+  const unseenVideos: VideoData[] = (
+    await getUnseenVideosIdsApi(videoLimit)
+  ).filter((video) => !relatedVideoIdsSet.has(video.docId));
+  const mergedVideos: VideoData[] = mergeVideos(relatedVideos, unseenVideos)
+    .filter((video) => video.videoId !== videoId)
+    .slice(0, RELEATED_VIDEOS_LIMIT);
+  return fetchVideosByVideoData(mergedVideos);
 };
 
 export const fetchVideosByVideoData = async (videoData: VideoData[]) => {
