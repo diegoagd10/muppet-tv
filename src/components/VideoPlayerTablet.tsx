@@ -7,9 +7,11 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import YoutubePlayer from "react-native-youtube-iframe";
+import RetryWrapper from "./RetryWrapper";
 import VideoItem from "../models/VideoItem";
 import VideoList from "./VideoList";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import LoadingWrapper from "./LoadingWrapper";
 
 interface Props {
   videoId: string;
@@ -20,6 +22,8 @@ interface Props {
   screenWidth: number;
   isWideView: boolean;
   isPlaying: boolean;
+  errorOccurred: boolean;
+  onErrorRetryClick: () => void;
   onVideoEnd: () => void;
   onRefresh: () => void;
 }
@@ -33,6 +37,8 @@ const VideoPlayerTablet: React.FC<Props> = ({
   screenWidth,
   isWideView,
   isPlaying,
+  errorOccurred,
+  onErrorRetryClick,
   onVideoEnd,
   onRefresh,
 }) => {
@@ -90,12 +96,19 @@ const VideoPlayerTablet: React.FC<Props> = ({
         </View>
       </View>
       <View style={{ flex: 1, paddingLeft: 10, paddingRight: 10 }}>
-        <VideoList
-          idPrefix="player"
-          videos={videos}
-          isWideView={isWideView ? false : true}
-          shouldLoadMore={false}
-        />
+        <RetryWrapper
+          showError={errorOccurred}
+          onRetryClick={onErrorRetryClick}
+        >
+          <LoadingWrapper isLoading={videos.length === 0}>
+            <VideoList
+              idPrefix="player"
+              videos={videos}
+              isWideView={isWideView ? false : true}
+              stopLoading={videos.length > 0}
+            />
+          </LoadingWrapper>
+        </RetryWrapper>
       </View>
     </SafeAreaView>
   );
