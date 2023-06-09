@@ -2,16 +2,6 @@
 
 I built this React Native application for my kids to allow them to watch videos while ensuring a safe and controlled viewing experience. The app allows users to play videos and provides a navigation experience for seamless video playback. It also suggests videos based on the least viewed content, ensuring a diverse and engaging selection for users.
 
-## Demo
-
-### Smartphone (Pixel 4a)
-
-<iframe src="https://player.vimeo.com/video/834604398" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-
-### Tablet (Nexus 10)
-
-<iframe src="https://player.vimeo.com/video/834604578" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-
 ## Features
 
 - Video playback using the YouTube iframe player
