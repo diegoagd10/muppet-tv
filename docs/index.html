@@ -3,39 +3,182 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Muppet TV Demo</title>
-    <link rel="stylesheet" href="./style.css" />
+    <title>Muppet TV</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <!-- Font Awesome 5 CDN -->
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Link to your custom CSS file -->
   </head>
+
   <body>
-    <div class="content">
-      <header>
-        <h1>Demo</h1>
-      </header>
-      <div class="main-content">
-        <section class="demo-content">
-          <h2 class="demo-title">Smartphone (Pixel 4a)</h2>
-          <section>
-            <iframe
-              title="vimeo-player"
-              src="https://player.vimeo.com/video/834604398?h=eab6ded46d"
-              frameborder="0"
-              allowfullscreen
-              class="demo-video"
-            ></iframe>
-          </section>
-        </section>
-        <section class="demo-content">
-          <h2 class="demo-title">Tablet (Nexus 10)</h2>
-          <section>
-            <iframe
-              src="https://player.vimeo.com/video/834604578"
-              frameborder="0"
-              allowfullscreen
-              class="demo-video"
-            ></iframe>
-          </section>
-        </section>
+    <header>
+      <!-- Navigation Menu -->
+      <nav>
+        <!-- Add your logo and navigation links here -->
+      </nav>
+    </header>
+
+    <main>
+      <!-- Hero Section -->
+      <section id="hero">
+        <div class="hero-content">
+          <h1>Muppet TV</h1>
+          <p>A Safe and Controlled Video Viewing Experience for Kids</p>
+          <a href="#features" class="cta-button">Learn More</a>
+        </div>
+        <div class="hero-image">
+          <img src="./assets/screenshot.png" alt="Muppet TV Screenshot" />
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section id="features">
+        <div class="container">
+          <h2>Features</h2>
+          <div class="feature">
+            <i class="fas fa-play-circle"></i>
+            <h3>Video Player</h3>
+            <p>Enjoy seamless video playback with our built-in video player.</p>
+          </div>
+          <div class="feature">
+            <i class="fas fa-list"></i>
+            <h3>Video Lists</h3>
+            <p>
+              Fetch and display video lists for easy navigation and selection.
+            </p>
+          </div>
+          <div class="feature">
+            <i class="fas fa-sync-alt"></i>
+            <h3>Error Handling and Retries</h3>
+            <p>
+              Handle errors gracefully and provide automatic retries for a
+              smooth viewing experience.
+            </p>
+          </div>
+          <div class="feature">
+            <i class="fas fa-database"></i>
+            <h3>Firebase Integration</h3>
+            <p>
+              Integrate with Firebase to retrieve video IDs and increment view
+              counts.
+            </p>
+          </div>
+          <div class="feature">
+            <i class="fab fa-youtube"></i>
+            <h3>YouTube Data API</h3>
+            <p>
+              Utilize the YouTube Data API to fetch video details and enhance
+              the viewing experience.
+            </p>
+          </div>
+          <div class="feature">
+            <i class="fas fa-mobile-alt"></i>
+            <h3>Responsive Design</h3>
+            <p>
+              Ensure a seamless and optimized experience across different screen
+              sizes and orientations.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screenshots/Demos Section -->
+      <section id="screenshots">
+        <div class="container">
+          <h2>Screenshots and Demos</h2>
+          <div class="video">
+            <div class="video-wrapper">
+              <iframe
+                src="https://player.vimeo.com/video/834604398?h=eab6ded46d"
+                width="375"
+                height="667"
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <div class="video-description">
+              <h3>Smartphone Demo</h3>
+              <p>
+                Showcasing the application on a smartphone for an immersive
+                video viewing experience on the go.
+              </p>
+            </div>
+          </div>
+          <div class="video">
+            <div class="video-wrapper">
+              <iframe
+                src="https://player.vimeo.com/video/834604578?h=0d3f75ee6e"
+                width="768"
+                height="1024"
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <div class="video-description">
+              <h3>Tablet Demo</h3>
+              <p>
+                Experience the Muppet TV application optimized for tablets,
+                offering a larger screen for enhanced viewing.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About and Contact Section -->
+      <section id="about-contact">
+        <div class="container">
+          <div class="about">
+            <h2>About</h2>
+            <p>
+              I built this React Native application for my kids to allow them to
+              watch videos while ensuring a safe and controlled viewing
+              experience. The app allows users to play videos and provides a
+              navigation experience for seamless video playback. It also
+              suggests videos based on the least viewed content, ensuring a
+              diverse and engaging selection for users.
+            </p>
+          </div>
+          <div class="contact">
+            <h2>Contact</h2>
+            <p>
+              For any inquiries or feedback, please feel free to contact me. You
+              can reach us via email or through our GitHub repository:
+            </p>
+            <ul>
+              <li>Email: diegogomez211990@gmail.com</li>
+              <li>
+                GitHub:
+                <a href="https://github.com/diegoagd10/muppet-tv"
+                  >https://github.com/diegoagd10/muppet-tv</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-links">
+            <a href="#hero">Home</a>
+            <a href="#features">Features</a>
+            <a href="#screenshots">Screenshots/Demos</a>
+            <a href="#about-contact">About/Contact</a>
+          </div>
+          <div class="footer-info">
+            <p>&copy; 2023 Muppet TV.</p>
+            <p>Designed and developed by Diego Antonio Gómez Díaz</p>
+          </div>
+        </div>
       </div>
-    </div>
+    </footer>
   </body>
 </html>

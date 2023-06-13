@@ -4,7 +4,7 @@ I built this React Native application for my kids to allow them to watch videos 
 
 ## Features
 
-- Video playback using the YouTube iframe player
+- Video player using the YouTube iframe player
 - Fetching and displaying video lists
 - Handling errors and retries
 - Integration with Firebase to retrieve video IDs and increment view counts
